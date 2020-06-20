@@ -1,12 +1,12 @@
 import DispatcherFunctionMap from "../../types/DispatcherFunctionMap";
 import { Credentials } from "../../types/Credentials";
-import PromiseActionResolver from "../../todo/PromiseActionResolver";
-import LoginPromise from "../../promises/LoginPromise";
+import ActionCreator from "../../todo/ActionCreator";
+import LoginService from "../../services/LoginService";
 
 const LoginDispatchFunction = (dispatch: any) : DispatcherFunctionMap => {
     return {
         handleLogin: (payload: Credentials) =>
-            PromiseActionResolver(payload, 'LOGIN_TYPE', LoginPromise, dispatch),
+            dispatch(ActionCreator('LOGIN_TYPE', payload, LoginService))
     } as DispatcherFunctionMap;
 }
 

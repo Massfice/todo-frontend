@@ -2,11 +2,12 @@ import Action from "../types/Action";
 import { Credentials } from "../types/Credentials";
 import Todo from "../types/Todo";
 import ActionCreator from "./ActionCreator";
+import { LoginFinalResponse } from "../types/LoginFinalResponse";
 
 function Dispatch(this: any, type: string, next: any) {
     this.type = type;
     this.next = next;
-    this.use = (payload: Credentials | Todo | null) => {
+    this.use = (payload: Credentials | Todo | LoginFinalResponse | null) => {
         let _action = ActionCreator(this.type, payload, null);
         this.next(_action); 
     }
