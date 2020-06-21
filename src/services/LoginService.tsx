@@ -3,17 +3,17 @@ import Axios from "./Axios";
 import User from "../types/User";
 import LoginFinalResponse from "../types/LoginFinalResponse";
 import LoginEndPointResponse from "../types/LoginEndpointResponse";
-import { ActionPayloadType } from "../types/constants";
+import { ActionPayloadType, StateTokenType, StateUserType } from "../types/constants";
 
-export const UserDetailsService : TokenFunction = (token: string | LoginEndPointResponse) : Promise<User> => { //here
-    let _token : string;
-    if(typeof token === 'object' && token.token !== null) {
-        _token = token.token;
-    } else if(typeof token === 'string') {
-        _token = token;
+export const UserDetailsService : TokenFunction = (token: StateTokenType) : Promise<StateUserType> => {
+    if(token === null) {
+        return new Promise((resolve, reject) => {
+            reject(null);
+        });
     }
+
     return new Promise<User>((resolve: any, reject: any) => {
-        let token_instance = Axios.token(_token);
+        let token_instance = Axios.token(token);
         token_instance.get('').then((response: any) => {
             resolve({
                 name: response.data.data.name,
@@ -28,40 +28,33 @@ export const UserDetailsService : TokenFunction = (token: string | LoginEndPoint
 
 const LoginService : DispatchFunction = (payload: ActionPayloadType, dispatch: any) : void => {
     let login_instance = Axios.login();
+    let login_response : LoginEndPointResponse;
     login_instance.post('',JSON.stringify(payload)).then((response: any) => {
-        let endpoint_response : LoginEndPointResponse = {
+        login_response = {
             token: response.data.data.token,
             errors: []
         }
-
-        UserDetailsService(endpoint_response).then((response: any) => {
-            let final_login_success_response : LoginFinalResponse = {
-                endpoint: endpoint_response,
-                user: response
-            };
-
-            dispatch(final_login_success_response);
-        }, (error: any) => {
-            let login_unknown_response : LoginFinalResponse = {
-                endpoint: endpoint_response,
-                user: null
-            };
-
-            dispatch(login_unknown_response);
-        })
-    }, (error: any) => {   
-        console.log(error);
-        let endpoint_error_response : LoginEndPointResponse = {
+        if(login_response.token === null) {
+            return false;
+        }
+        return UserDetailsService(login_response.token);
+    }, (error: any) => {
+        login_response = {
             token: null,
             errors: error.response.data.errors 
-        }
-
-        let final_error_response : LoginFinalResponse = {
-            endpoint: endpoint_error_response,
-            user: null
+        };
+        return null;
+    }).then((response: any) => {
+        let final_response : LoginFinalResponse = {
+            endpoint: login_response,
+            user: response
         };
 
-        dispatch(final_error_response);
+        if(login_response.token !== null) {
+            sessionStorage.setItem('token',login_response.token);
+        }
+
+        dispatch(final_response);
     });
 }
 

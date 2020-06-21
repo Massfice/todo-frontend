@@ -8,7 +8,7 @@ import Store from "./todo/Store";
 function App() {
   return (
     <div className="App">
-      <Provider store={Store}>
+      <Provider store={Store()}>
         <Main />
       </Provider>
     </div>

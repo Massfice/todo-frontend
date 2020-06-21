@@ -8,4 +8,4 @@ export type ActionCreatorFunction = (type: string, payload: any, dispatch: Actio
 
 export type DispatchFunction = (payload: ActionPayloadType, dispatch: any) => void;
 
-export type TokenFunction = (token: string | LoginEndPointResponse) => Promise<any>;
+export type TokenFunction = (token: string) => Promise<any>;

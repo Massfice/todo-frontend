@@ -4,9 +4,18 @@ import Init from "./Init";
 import LoginFinalResponse from "../types/LoginFinalResponse";
 import LoginEndPointResponse from "../types/LoginEndpointResponse";
 import User from "../types/User";
-import { LOGIN_TYPE, CLEANUP_ERRORS_TYPE } from "../types/constants";
+import { LOGIN_TYPE, CLEANUP_ERRORS_TYPE, STATE_STATE } from "../types/constants";
 
-const Reducer = (state: State = Init, action: Action) : State => {
+export const saveState = (state: State) : State => {
+    sessionStorage.setItem(STATE_STATE,JSON.stringify(state));
+
+    return state;
+} 
+
+const Reducer = (state: State | null = null, action: Action) : State => {
+    if(state === null) {
+        state = Init();
+    }
     const isPayloadUser = (payload: any) : payload is User => {
         return typeof payload.name === 'string' && payload.name.length > 0 &&
         typeof payload.surname === 'string' && payload.surname.length > 0 &&
@@ -40,7 +49,7 @@ const Reducer = (state: State = Init, action: Action) : State => {
             user: action.payload.user
         }
 
-        return newState;
+        return saveState(newState);
     }
 
     if(action.type === CLEANUP_ERRORS_TYPE) {
@@ -49,7 +58,7 @@ const Reducer = (state: State = Init, action: Action) : State => {
             errors: []
         };
 
-        return newState;
+        return saveState(newState);
     }
 
     return state;
