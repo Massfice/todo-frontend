@@ -4,8 +4,9 @@ import Init from "./Init";
 import LoginFinalResponse from "../types/LoginFinalResponse";
 import LoginEndPointResponse from "../types/LoginEndpointResponse";
 import User from "../types/User";
-import { LOGIN_TYPE, CLEANUP_ERRORS_TYPE, REFRESH_STATE_TYPE, REGISTER_TYPE } from "../types/constants";
+import { LOGIN_TYPE, CLEANUP_ERRORS_TYPE, REFRESH_STATE_TYPE, REGISTER_TYPE, LOGOUT_TYPE } from "../types/constants";
 import SaveState from "./SaveState";
+import { PreState } from "./PreInit";
 
 const AddErrorsName = (name: string, errors: string[]) : string[] => {
     let named_errors: string[] = [];
@@ -87,6 +88,10 @@ const Reducer = (state: State = Init(), action: Action) : State => {
         }
 
         return SaveState(newState);
+    }
+
+    if(action.type === LOGOUT_TYPE) {
+        return SaveState(PreState);
     }
 
     return state;

@@ -1,8 +1,11 @@
 import State from "../../types/State";
-import { StateUserType } from "../../types/constants";
+import { StateUserType, StateTokenType } from "../../types/constants";
 
-const MainStateFunction = (state: State) : {user: StateUserType} => {
-    return {user: state.user};
+const MainStateFunction = (state: State) : {user: StateUserType, token: StateTokenType} => {
+    return {
+        user: state.user,
+        token: state.token
+    };
 }
 
 export default MainStateFunction;

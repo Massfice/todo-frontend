@@ -7,7 +7,7 @@ const bearer = (token: string) : any => {
 }
 
 const access_config = {
-    baseURL: 'http://localhost/--%20DIPLOMA%20--/meet-your-elf-auth/public/token/json',
+    baseURL: 'http://localhost/--%20DIPLOMA%20--/meet-your-elf-auth/public',
     timeout: 10000,
     headers: {}
 };
@@ -36,6 +36,11 @@ const Axios = {
     register: () : AxiosInstance => {
         let config = register_config;
 
+        return axios.create(config);
+    },
+    logout: (token: string) : AxiosInstance => {
+        let config = access_config;
+        config.headers = bearer(token);
         return axios.create(config);
     }
 };

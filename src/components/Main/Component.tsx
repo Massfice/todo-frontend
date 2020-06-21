@@ -14,6 +14,10 @@ const Component = (props: any) => {
         handleRefreshState();
     },[handleRefreshState]);
 
+    const logout = () => {
+        props.handleLogout(props.token);
+    }
+
     if(props.user === null) {
         return (
             <Router>
@@ -25,11 +29,17 @@ const Component = (props: any) => {
                 <Route exact path='/'>
                     <Redirect to='/login'/>
                 </Route>
+                <Route exact path='/:slug'>
+                    <Redirect to='/login'/>
+                </Route>
             </Router>
         );
     } else {
         return (
-            <div key="main">Zalogowany użytkownik</div>
+            <div key="main">
+                <button onClick={logout}>Wyloguj się</button> <br/>
+                Witaj, {props.user.name} {props.user.surname} [ {props.user.email} ]
+            </div>
         );        
     }
 }

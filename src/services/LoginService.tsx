@@ -14,7 +14,7 @@ export const UserDetailsService : TokenFunction = (token: StateTokenType) : Prom
 
     return new Promise<User>((resolve: any, reject: any) => {
         let token_instance = Axios.token(token);
-        token_instance.get('').then((response: any) => {
+        token_instance.get('/token/json').then((response: any) => {
             resolve({
                 name: response.data.data.name,
                 surname: response.data.data.surname,
@@ -29,7 +29,7 @@ export const UserDetailsService : TokenFunction = (token: StateTokenType) : Prom
 const LoginService : DispatchFunction = (payload: ActionPayloadType, dispatch: any) : void => {
     let login_instance = Axios.login();
     let login_response : LoginEndPointResponse;
-    login_instance.post('',JSON.stringify(payload)).then((response: any) => {
+    login_instance.post('/token/json',JSON.stringify(payload)).then((response: any) => {
         login_response = {
             token: response.data.data.token,
             errors: []
