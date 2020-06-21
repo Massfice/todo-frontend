@@ -4,7 +4,7 @@ import Init from "./Init";
 import LoginFinalResponse from "../types/LoginFinalResponse";
 import LoginEndPointResponse from "../types/LoginEndpointResponse";
 import User from "../types/User";
-import { LOGIN_TYPE, CLEANUP_ERRORS_TYPE, REFRESH_STATE_TYPE } from "../types/constants";
+import { LOGIN_TYPE, CLEANUP_ERRORS_TYPE, REFRESH_STATE_TYPE, REGISTER_TYPE } from "../types/constants";
 import SaveState from "./SaveState";
 
 const AddErrorsName = (name: string, errors: string[]) : string[] => {
@@ -67,6 +67,26 @@ const Reducer = (state: State = Init(), action: Action) : State => {
 
     if(action.type === REFRESH_STATE_TYPE) {
         return state;
+    }
+
+    if(action.type === REGISTER_TYPE) {
+        let errors : string[] = [];
+        if(action.payload === null || !Array.isArray(action.payload)) {
+            errors = [];
+        } else {
+            errors = AddErrorsName('REGISTER_ERROR', action.payload);
+        }
+
+        if(errors.length === 0) {
+            window.alert('Register successfull');
+        }
+
+        let newState = {
+            ...state,
+            errors: errors
+        }
+
+        return SaveState(newState);
     }
 
     return state;

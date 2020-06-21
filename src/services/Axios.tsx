@@ -12,6 +12,14 @@ const access_config = {
     headers: {}
 };
 
+const register_config = {
+    baseURL: 'http://localhost/--%20DIPLOMA%20--/meet-your-elf-auth/public/register/json',
+    timeout: 10000,
+    headers: {
+        'Content-Type' : 'application/json'
+    }
+};
+
 const Axios = {
     token: (token: string) : AxiosInstance => {
         let config = access_config;
@@ -23,6 +31,11 @@ const Axios = {
         config.headers = {
             'Content-Type' : 'application/json'
         };
+        return axios.create(config);
+    },
+    register: () : AxiosInstance => {
+        let config = register_config;
+
         return axios.create(config);
     }
 };
