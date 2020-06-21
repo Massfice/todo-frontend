@@ -9,9 +9,10 @@ import Login from "../Login/Component";
 import Register from "../Register/Component";
 
 const Component = (props: any) => {
+    let handleRefreshState = props.handleRefreshState;
     useEffect(() => {
-        props.handleRefreshState();
-    });
+        handleRefreshState();
+    },[handleRefreshState]);
 
     if(props.user === null) {
         return (

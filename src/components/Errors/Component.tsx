@@ -13,11 +13,17 @@ const Component = (props: any) => {
         )
     });
 
-    useEffect(() => {
-        return function cleanup() {
-            props.handleCleanupErrors();
-        }; // eslint-disable-next-line
-    },[]);
+    let handleCleanupErrors = props.handleCleanupErrors;
+    // useEffect(() => {
+    //     return function cleanup() {
+    //         if(props.errors.length > 0) {
+    //             handleCleanupErrors();
+    //         }
+    //     };  // eslint-disable-next-line
+    // },[]);
+
+    // eslint-disable-next-line
+    useEffect( () => () => handleCleanupErrors(), [] );
     
     return (
         <div key="errors">

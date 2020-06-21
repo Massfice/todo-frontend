@@ -2,7 +2,7 @@ import State from "../types/State";
 
 import { STATE_STATE, STATE_REQUEST_STATE_CHANNEL, STATE_RESPONSE_STATE_CHANNEL } from "../types/constants";
 
-const instance_ID : string = "_" +
+export const instance_ID : string = "_" +
     Math.random().toString(36).substring(7) +
     Math.random().toString(36).substring(7) +
     Math.random().toString(36).substring(7) +

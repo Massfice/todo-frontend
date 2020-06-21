@@ -4,19 +4,22 @@ import Init from "./Init";
 import LoginFinalResponse from "../types/LoginFinalResponse";
 import LoginEndPointResponse from "../types/LoginEndpointResponse";
 import User from "../types/User";
-import { LOGIN_TYPE, CLEANUP_ERRORS_TYPE, STATE_REFRESH_STATE_CHANNEL, REFRESH_STATE_TYPE } from "../types/constants";
+import { LOGIN_TYPE, CLEANUP_ERRORS_TYPE, REFRESH_STATE_TYPE } from "../types/constants";
 import SaveState from "./SaveState";
 
-const process_state = (state: State) : State => {
-    let refresh_channel = new BroadcastChannel(STATE_REFRESH_STATE_CHANNEL)
-    refresh_channel.postMessage(state);
-    return SaveState(state);
-} 
+const AddErrorsName = (name: string, errors: string[]) : string[] => {
+    let named_errors: string[] = [];
+    errors.map((error: string) => {
+        error = name + ': ' + error;
+        named_errors.push(error);
+        return true;
+    });
 
-const Reducer = (state: State | null = null, action: Action) : State => {
-    if(state === null) {
-        state = Init();
-    }
+    return named_errors;
+}
+
+const Reducer = (state: State = Init(), action: Action) : State => {
+
     const isPayloadUser = (payload: any) : payload is User => {
         return typeof payload.name === 'string' && payload.name.length > 0 &&
         typeof payload.surname === 'string' && payload.surname.length > 0 &&
@@ -46,11 +49,11 @@ const Reducer = (state: State | null = null, action: Action) : State => {
         const newState = {
             ...state,
             token: action.payload.endpoint.token,
-            errors: action.payload.endpoint.errors,
+            errors: AddErrorsName('LOGIN_ERROR',action.payload.endpoint.errors),
             user: action.payload.user
         }
 
-        return process_state(newState);
+        return SaveState(newState);
     }
 
     if(action.type === CLEANUP_ERRORS_TYPE) {
@@ -59,21 +62,11 @@ const Reducer = (state: State | null = null, action: Action) : State => {
             errors: []
         };
 
-        return process_state(newState);
+        return SaveState(newState);
     }
 
     if(action.type === REFRESH_STATE_TYPE) {
-        let newState : State = state;
-
-        let payload : any = action.payload;
-
-        if(payload !== null) {
-            newState = {
-                ...payload
-            };
-        }
-
-        return SaveState(newState);
+        return state;
     }
 
     return state;
