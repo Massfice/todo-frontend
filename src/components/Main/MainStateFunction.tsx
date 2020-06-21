@@ -1,7 +1,7 @@
 import State from "../../types/State";
-import User from "../../types/User";
+import { StateUserType } from "../../types/constants";
 
-const MainStateFunction = (state: State) : {user: User | null} => {
+const MainStateFunction = (state: State) : {user: StateUserType} => {
     return {user: state.user};
 }
 

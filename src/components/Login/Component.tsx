@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import LoginStateFunction from "./LoginStateFunction";
 import LoginDispatchFunction from "./LoginDispatchFunction";
 
-import { Credentials } from '../../types/Credentials';
+import Credentials from '../../types/Credentials';
 import Errors from '../Errors/Component';
 
 const Component = (props: any) => {

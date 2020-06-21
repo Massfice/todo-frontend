@@ -1,13 +1,11 @@
 import Action from "../types/Action";
-import { ActionCreatorFunction, DispatchFunction } from "../types/FunctionTypes";
-import { Credentials } from "../types/Credentials";
-import Todo from "../types/Todo";
-import { LoginFinalResponse } from "../types/LoginFinalResponse";
+import { ActionCreatorFunction } from "../types/FunctionTypes";
+import { ActionPayloadType, ActionDispatchType } from "../types/constants";
 
 const ActionCreator : ActionCreatorFunction = (
     type: string, 
-    payload: Credentials | Todo | LoginFinalResponse | null, 
-    dispatch: DispatchFunction | null
+    payload: ActionPayloadType,
+    dispatch: ActionDispatchType
     ) : Action => {
     const action: Action = {
         type: type,
@@ -17,7 +15,5 @@ const ActionCreator : ActionCreatorFunction = (
     return action;
 
 }
-
-ActionCreator('aaaa',null,null);
 
 export default ActionCreator;

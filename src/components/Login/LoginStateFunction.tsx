@@ -1,8 +1,7 @@
 import State from "../../types/State";
-import User from "../../types/User";
 
-const LoginStateFunction = (state: State) : {user: User | null} => {
-    return {user: state.user};
+const LoginStateFunction = (state: State) : {} => {
+    return {};
 }
 
 export default LoginStateFunction;

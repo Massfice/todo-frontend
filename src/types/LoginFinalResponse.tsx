@@ -1,7 +1,8 @@
-import { LoginEndPointResponse } from "./LoginEndpointResponse";
-import User from "./User";
+import LoginEndPointResponse from "./LoginEndpointResponse";
+import { StateUserType } from "./constants";
 
-export interface LoginFinalResponse {
+export default interface LoginFinalResponse {
     endpoint: LoginEndPointResponse,
-    user: User | null
+    user: StateUserType
 }
+

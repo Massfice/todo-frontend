@@ -1,10 +1,7 @@
-import { Credentials } from "./Credentials";
-import Todo from "./Todo";
-import { DispatchFunction } from "./FunctionTypes";
-import { LoginFinalResponse } from "./LoginFinalResponse";
+import { ActionPayloadType, ActionDispatchType } from "./constants";
 
 export default interface Action {
     type: string,
-    payload: Credentials | Todo | LoginFinalResponse | null,
-    dispatch: DispatchFunction | null
+    payload: ActionPayloadType
+    dispatch: ActionDispatchType
 }

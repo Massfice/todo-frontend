@@ -1,12 +1,11 @@
 import { DispatchFunction, TokenFunction } from "../types/FunctionTypes";
-import { Credentials } from "../types/Credentials";
-import Todo from "../types/Todo";
 import Axios from "./Axios";
 import User from "../types/User";
-import { LoginFinalResponse } from "../types/LoginFinalResponse";
-import { LoginEndPointResponse } from "../types/LoginEndpointResponse";
+import LoginFinalResponse from "../types/LoginFinalResponse";
+import LoginEndPointResponse from "../types/LoginEndpointResponse";
+import { ActionPayloadType } from "../types/constants";
 
-export const UserDetailsService : TokenFunction = (token: string | LoginEndPointResponse) : Promise<User> => {
+export const UserDetailsService : TokenFunction = (token: string | LoginEndPointResponse) : Promise<User> => { //here
     let _token : string;
     if(typeof token === 'object' && token.token !== null) {
         _token = token.token;
@@ -27,7 +26,7 @@ export const UserDetailsService : TokenFunction = (token: string | LoginEndPoint
     });
 }
 
-const LoginService : DispatchFunction = (payload: Credentials | Todo | LoginFinalResponse | null, dispatch: any) : void => {
+const LoginService : DispatchFunction = (payload: ActionPayloadType, dispatch: any) : void => {
     let login_instance = Axios.login();
     login_instance.post('',JSON.stringify(payload)).then((response: any) => {
         let endpoint_response : LoginEndPointResponse = {

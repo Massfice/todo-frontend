@@ -1,13 +1,11 @@
 import Action from "../types/Action";
-import { Credentials } from "../types/Credentials";
-import Todo from "../types/Todo";
 import ActionCreator from "./ActionCreator";
-import { LoginFinalResponse } from "../types/LoginFinalResponse";
+import { ActionPayloadType } from "../types/constants";
 
 function Dispatch(this: any, type: string, next: any) {
     this.type = type;
     this.next = next;
-    this.use = (payload: Credentials | Todo | LoginFinalResponse | null) => {
+    this.use = (payload: ActionPayloadType) => {
         let _action = ActionCreator(this.type, payload, null);
         this.next(_action); 
     }

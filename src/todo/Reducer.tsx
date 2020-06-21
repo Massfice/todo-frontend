@@ -1,9 +1,10 @@
 import State from "../types/State";
 import Action from "../types/Action";
 import Init from "./Init";
-import { LoginFinalResponse } from "../types/LoginFinalResponse";
-import { LoginEndPointResponse } from "../types/LoginEndpointResponse";
+import LoginFinalResponse from "../types/LoginFinalResponse";
+import LoginEndPointResponse from "../types/LoginEndpointResponse";
 import User from "../types/User";
+import { LOGIN_TYPE, CLEANUP_ERRORS_TYPE } from "../types/constants";
 
 const Reducer = (state: State = Init, action: Action) : State => {
     const isPayloadUser = (payload: any) : payload is User => {
@@ -31,7 +32,7 @@ const Reducer = (state: State = Init, action: Action) : State => {
             (payload.user === null || isPayloadUser(payload.user)); 
     }
 
-    if(action.type === 'LOGIN_TYPE' && isPayloadFinalLoginResponse(action.payload)) {
+    if(action.type === LOGIN_TYPE && isPayloadFinalLoginResponse(action.payload)) {
         const newState = {
             ...state,
             token: action.payload.endpoint.token,
@@ -42,7 +43,7 @@ const Reducer = (state: State = Init, action: Action) : State => {
         return newState;
     }
 
-    if(action.type === 'CLEANUP_ERRORS_TYPE') {
+    if(action.type === CLEANUP_ERRORS_TYPE) {
         const newState = {
             ...state,
             errors: []

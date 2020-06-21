@@ -1,4 +1,6 @@
-export interface LoginEndPointResponse {
-    token: string | null,
-    errors: Array<String>,
+import { StateTokenType } from "./constants";
+
+export default interface LoginEndPointResponse {
+    token: StateTokenType,
+    errors: Array<string>,
 }

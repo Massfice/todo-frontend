@@ -1,8 +1,7 @@
 import State from "../../types/State";
-import User from "../../types/User";
 
-const RegisterStateFunction = (state: State) : {user: User | null} => {
-    return {user: state.user};
+const RegisterStateFunction = (state: State) : {} => {
+    return {};
 }
 
 export default RegisterStateFunction;

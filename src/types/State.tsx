@@ -1,9 +1,10 @@
 import Todo from "./Todo";
-import User from "./User";
+import { StateTokenType, StateUserType } from "./constants";
+
 
 export default interface State {
     todos: Todo[],
-    token: string | null,
+    token: StateTokenType,
     errors: String[],
-    user: User | null
+    user: StateUserType
 }
