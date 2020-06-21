@@ -4,10 +4,10 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import PreInit from './todo/PreInit';
-import { saveState } from './todo/Reducer';
+import SaveState from './todo/SaveState';
 
 PreInit().then((init) => {
-  saveState(init);
+  SaveState(init);
 
   ReactDOM.render(
     <React.StrictMode>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Route, Redirect, NavLink } from 'react-router-dom';
 // import { IndexRoute } from 'react-router';
@@ -9,6 +9,10 @@ import Login from "../Login/Component";
 import Register from "../Register/Component";
 
 const Component = (props: any) => {
+    useEffect(() => {
+        props.handleRefreshState();
+    });
+
     if(props.user === null) {
         return (
             <Router>

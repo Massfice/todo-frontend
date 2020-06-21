@@ -10,7 +10,7 @@ const Init = () : State => {
 
         request_channel.onmessage = (ev) => {
             let response_channel = new BroadcastChannel(STATE_RESPONSE_STATE_CHANNEL + ev.data);
-            response_channel.postMessage(savedState);
+            response_channel.postMessage(sessionStorage.getItem(STATE_STATE));
         }
 
         return JSON.parse(savedState);

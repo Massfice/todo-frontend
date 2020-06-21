@@ -24,21 +24,9 @@ const PreInit = () : Promise<State> => {
     request_channel.postMessage(instance_ID);
     request_channel.close();
 
-    response_channel.postMessage(null);
-
-    let received_state : any = null;
-    const onMessageHandler = (ev : any) => {
-        if(received_state === null) {
-            console.log(ev.data);
-            response_channel.removeEventListener('message',onMessageHandler);
-            response_channel.close();
-            received_state = ev.data;
-        }
-    }
-
-    response_channel.onmessage = (ev) => onMessageHandler(ev);
-
     return new Promise<State>((resolve: any, reject: any) => {
+        let timeout_id = setTimeout(() => {
+            
         let Init : State = PreState;
 
         if(savedState !== undefined && savedState !== null) {
@@ -46,6 +34,20 @@ const PreInit = () : Promise<State> => {
         }
 
         resolve(Init);
+        }, 1000);
+
+        let received_state : any = null;
+        const onMessageHandler = (ev : any) => {
+            if(received_state === null) {
+                response_channel.removeEventListener('message',onMessageHandler);
+                response_channel.close();
+                received_state = ev.data;
+                resolve(JSON.parse(received_state));
+                clearTimeout(timeout_id);
+            }
+        }
+    
+        response_channel.onmessage = (ev) => onMessageHandler(ev);
     });
 }
 

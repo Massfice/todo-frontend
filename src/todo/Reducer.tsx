@@ -4,12 +4,13 @@ import Init from "./Init";
 import LoginFinalResponse from "../types/LoginFinalResponse";
 import LoginEndPointResponse from "../types/LoginEndpointResponse";
 import User from "../types/User";
-import { LOGIN_TYPE, CLEANUP_ERRORS_TYPE, STATE_STATE } from "../types/constants";
+import { LOGIN_TYPE, CLEANUP_ERRORS_TYPE, STATE_REFRESH_STATE_CHANNEL, REFRESH_STATE_TYPE } from "../types/constants";
+import SaveState from "./SaveState";
 
-export const saveState = (state: State) : State => {
-    sessionStorage.setItem(STATE_STATE,JSON.stringify(state));
-
-    return state;
+const process_state = (state: State) : State => {
+    let refresh_channel = new BroadcastChannel(STATE_REFRESH_STATE_CHANNEL)
+    refresh_channel.postMessage(state);
+    return SaveState(state);
 } 
 
 const Reducer = (state: State | null = null, action: Action) : State => {
@@ -49,7 +50,7 @@ const Reducer = (state: State | null = null, action: Action) : State => {
             user: action.payload.user
         }
 
-        return saveState(newState);
+        return process_state(newState);
     }
 
     if(action.type === CLEANUP_ERRORS_TYPE) {
@@ -58,7 +59,21 @@ const Reducer = (state: State | null = null, action: Action) : State => {
             errors: []
         };
 
-        return saveState(newState);
+        return process_state(newState);
+    }
+
+    if(action.type === REFRESH_STATE_TYPE) {
+        let newState : State = state;
+
+        let payload : any = action.payload;
+
+        if(payload !== null) {
+            newState = {
+                ...payload
+            };
+        }
+
+        return SaveState(newState);
     }
 
     return state;
