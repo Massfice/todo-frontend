@@ -5,9 +5,12 @@ import { ActionPayloadType } from "../types/constants";
 function Dispatch(this: any, type: string, next: any) {
     this.type = type;
     this.next = next;
-    this.use = (payload: ActionPayloadType) => {
-        let _action = ActionCreator(this.type, payload, null);
-        this.next(_action); 
+    this.use = (payload: ActionPayloadType, type: string = this.type, taketypeonly: boolean = false) : string => {
+        if(!taketypeonly) {
+            let _action = ActionCreator(type, payload, null);
+            this.next(_action); 
+        }
+        return this.type;
     }
 }
 

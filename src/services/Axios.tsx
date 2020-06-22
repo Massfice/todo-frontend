@@ -20,6 +20,12 @@ const register_config = {
     }
 };
 
+const todo_config = {
+    baseURL: 'http://localhost:8000/api/todo',
+    timeout: 10000,
+    headers: {}
+}
+
 const Axios = {
     token: (token: string) : AxiosInstance => {
         let config = access_config;
@@ -40,6 +46,11 @@ const Axios = {
     },
     logout: (token: string) : AxiosInstance => {
         let config = access_config;
+        config.headers = bearer(token);
+        return axios.create(config);
+    },
+    todo: (token: string) : AxiosInstance => {
+        let config = todo_config;
         config.headers = bearer(token);
         return axios.create(config);
     }

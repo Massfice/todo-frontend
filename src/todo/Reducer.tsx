@@ -4,9 +4,10 @@ import Init from "./Init";
 import LoginFinalResponse from "../types/LoginFinalResponse";
 import LoginEndPointResponse from "../types/LoginEndpointResponse";
 import User from "../types/User";
-import { LOGIN_TYPE, CLEANUP_ERRORS_TYPE, REFRESH_STATE_TYPE, REGISTER_TYPE, LOGOUT_TYPE } from "../types/constants";
+import { LOGIN_TYPE, CLEANUP_ERRORS_TYPE, REFRESH_STATE_TYPE, REGISTER_TYPE, LOGOUT_TYPE, SESSION_EXPIRED_TYPE, TODO_EDIT_TYPE, TODO_CREATE_TYPE, TODO_DELETE_TYPE, TODO_TOGGLE_TYPE } from "../types/constants";
 import SaveState from "./SaveState";
 import { PreState } from "./PreInit";
+import Todo from "../types/Todo";
 
 const AddErrorsName = (name: string, errors: string[]) : string[] => {
     let named_errors: string[] = [];
@@ -20,7 +21,6 @@ const AddErrorsName = (name: string, errors: string[]) : string[] => {
 }
 
 const Reducer = (state: State = Init(), action: Action) : State => {
-
     const isPayloadUser = (payload: any) : payload is User => {
         return typeof payload.name === 'string' && payload.name.length > 0 &&
         typeof payload.surname === 'string' && payload.surname.length > 0 &&
@@ -48,10 +48,10 @@ const Reducer = (state: State = Init(), action: Action) : State => {
 
     if(action.type === LOGIN_TYPE && isPayloadFinalLoginResponse(action.payload)) {
         const newState = {
-            ...state,
             token: action.payload.endpoint.token,
             errors: AddErrorsName('LOGIN_ERROR',action.payload.endpoint.errors),
-            user: action.payload.user
+            user: action.payload.user,
+            todos: action.payload.todos
         }
 
         return SaveState(newState);
@@ -92,6 +92,39 @@ const Reducer = (state: State = Init(), action: Action) : State => {
 
     if(action.type === LOGOUT_TYPE) {
         return SaveState(PreState);
+    }
+
+    if(action.type === SESSION_EXPIRED_TYPE) {
+        window.alert("Your session have expired. Please login again.");
+        return SaveState(PreState);
+    }
+
+    if(action.type === TODO_EDIT_TYPE || action.type === TODO_TOGGLE_TYPE || action.type === TODO_CREATE_TYPE) {
+        const todo = action.payload as Todo;
+        let newTodos = state.todos.filter(t => true);
+
+        newTodos[newTodos.findIndex((value) => {
+            return value.id === todo.id;
+        })] = todo;
+
+        const newState = {
+            ...state,
+            todos: newTodos
+        }
+
+        return SaveState(newState);
+    }
+
+    if(action.type === TODO_DELETE_TYPE) {
+        const todo = action.payload as Todo;
+        const newTodos = state.todos.filter(t => t.id !== todo.id);
+
+        const newState = {
+            ...state,
+            todos: newTodos
+        }
+
+        return SaveState(newState);
     }
 
     return state;

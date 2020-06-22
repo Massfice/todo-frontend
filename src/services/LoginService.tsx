@@ -4,6 +4,7 @@ import User from "../types/User";
 import LoginFinalResponse from "../types/LoginFinalResponse";
 import LoginEndPointResponse from "../types/LoginEndpointResponse";
 import { ActionPayloadType, StateTokenType, StateUserType } from "../types/constants";
+import Todo from "../types/Todo";
 
 export const UserDetailsService : TokenFunction = (token: StateTokenType) : Promise<StateUserType> => {
     if(token === null) {
@@ -29,6 +30,7 @@ export const UserDetailsService : TokenFunction = (token: StateTokenType) : Prom
 const LoginService : DispatchFunction = (payload: ActionPayloadType, dispatch: any) : void => {
     let login_instance = Axios.login();
     let login_response : LoginEndPointResponse;
+    let user_response : User;
     login_instance.post('/token/json',JSON.stringify(payload)).then((response: any) => {
         login_response = {
             token: response.data.data.token,
@@ -44,15 +46,40 @@ const LoginService : DispatchFunction = (payload: ActionPayloadType, dispatch: a
             errors: error.response.data.errors 
         };
         return null;
-    }).then((response: any) => {
-        let final_response : LoginFinalResponse = {
-            endpoint: login_response,
-            user: response
-        };
+    }).then((response: any) : any => {
+        user_response = response;
 
-        if(login_response.token !== null) {
-            sessionStorage.setItem('token',login_response.token);
+        if(user_response !== null) {
+            if(login_response.token !== null) {
+                return Axios.todo(login_response.token).get('/');
+            } else {
+                return [];
+            }
+        } else {
+            return [];
         }
+    }).then((response: any) => {
+        let todos: Todo[] = [];
+        if(Array.isArray(response)) {
+            todos = response;
+        } else {
+            let received_todos : [] = response.data;
+
+            received_todos.map((value: Todo) => {
+                todos.push({
+                    id: value.id,
+                    text: value.text,
+                    checked: value.checked
+                } as Todo);
+                return true;
+            })
+        }
+
+        let final_response = {
+            endpoint: login_response,
+            user: user_response,
+            todos: todos
+        } as LoginFinalResponse
 
         dispatch(final_response);
     });

@@ -6,9 +6,7 @@ const LogoutService : DispatchFunction = (payload: ActionPayloadType, dispatch: 
     payload = payload as string;
 
     dispatch(payload);
-    Axios.logout(payload).put('/secret/json').then(() => {
-        window.alert('Logout successfull')
-    });
+    Axios.logout(payload).put('/secret/json').then(() => {});
 }
 
 export default LogoutService;

@@ -21,9 +21,9 @@ const Component = (props: any) => {
     return (
         <div key="login">
             <form id='login_form' onSubmit={login}>
-                Username: <input type='text' name='username'/> |
-                Password: <input type='password' name='password'/>
-                <input type='submit' value='Login'/>
+                Nazwa Użytkownika: <input type='text' name='username'/> |
+                Hasło: <input type='password' name='password'/>
+                <input type='submit' value='Zaloguj się'/>
             </form>
             <Errors/>
         </div>

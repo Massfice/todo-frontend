@@ -4,11 +4,12 @@ import Todo from "./Todo";
 import LoginFinalResponse from "./LoginFinalResponse";
 import { DispatchFunction } from "./FunctionTypes";
 import RegisterCredentials from "./RegisterCredentials";
+import TodoOperation from "./TodoOperation";
 
 //Unions
 export type StateTokenType = string | null;
 export type StateUserType = User | null;
-export type ActionPayloadType = Credentials | Todo | LoginFinalResponse | null | string | RegisterCredentials | string[];
+export type ActionPayloadType = Credentials | Todo | LoginFinalResponse | null | string | RegisterCredentials | string[] | TodoOperation;
 export type ActionDispatchType = DispatchFunction | null;
 
 //Action Types:
@@ -17,6 +18,11 @@ export const CLEANUP_ERRORS_TYPE = 'CLEANUP_ERRORS_TYPE';
 export const REFRESH_STATE_TYPE = 'REFRESH_STATE_TYPE';
 export const REGISTER_TYPE = 'REGISTER_TYPE';
 export const LOGOUT_TYPE = 'LOGOUT_TYPE';
+export const SESSION_EXPIRED_TYPE = 'SESSION_EXPIRED_TYPE';
+export const TODO_DELETE_TYPE = 'TODO_DELETE_TYPE';
+export const TODO_EDIT_TYPE = 'TODO_EDIT_TYPE';
+export const TODO_CREATE_TYPE = 'TODO_CREATE_TYPE';
+export const TODO_TOGGLE_TYPE = 'TODO_TOGGLE_TYPE';
 
 //Other
 

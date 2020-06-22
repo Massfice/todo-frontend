@@ -31,11 +31,11 @@ const Component = (props: any) => {
     return (
         <div key="register">
             <form id='register_form' onSubmit={register}>
-                Username: <input type='text' name='username'/> |
-                Password: <input type='password' name='password'/> |
-                Repeat Password: <input type='password' name='repassword'/><br/>
-                Name:  <input type='text' name='name'/> | Surname: <input type='text' name='surname'/>
-                <input type='submit' value='Register'/>
+                Nazwa Użytkownika: <input type='text' name='username'/> |
+                Hasło: <input type='password' name='password'/> |
+                Powtórz: <input type='password' name='repassword'/><br/>
+                Imię:  <input type='text' name='name'/> | Nazwisko: <input type='text' name='surname'/>
+                <input type='submit' value='Zarejestruj się'/>
             </form>
             <Errors/>
         </div>
