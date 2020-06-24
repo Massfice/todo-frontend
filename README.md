@@ -35,7 +35,10 @@ This application uses Broadcast Channels provided by pure Javascript. This appli
 ###### Constants and Types
 I use several types defined in types folder under *src* folder. I use also *constants.tsx* defined in the same folder. That allows me change code in one place and affecting several another. It makes mantaining, updating, deleting and creating features easier. You can e.g. change endpoints using by this application.
 
-###### End Words
+###### Thunk Substitute
+I decided to make my own middleware instead of using Thunk for performing asynchronous operations. Reason is simple. I wanted to practice writing middlewares. And it works quite nice.
+
+## End Words
 I'm Adrian Larysz. To run this project locally:
 - `git clone https://github.com/Massfice/todo-frontend`
 - `yarn istall`
