@@ -6,9 +6,11 @@ import TodosStateFunction from "./TodosStateFunction";
 import TodosDispatchFunction from "./TodosDispatchFunction";
 
 import TodoComponent from "../Todo/Component";
+import TodoCreate from "../TodoCreate/Component";
 import "./Component.css";
 
 import Todo from '../../types/Todo';
+import TodoOperation from '../../types/TodoOperation';
 
 const Component = (props: any) => {
     const strikeText = (text: string, strike: boolean) => {
@@ -23,6 +25,23 @@ const Component = (props: any) => {
         }
     }
 
+    const toggle = (key: number) => {
+        const todo : Todo = props.todos[key];
+
+        if(todo !== null) {
+            todo.checked = !todo.checked;
+
+            const todoOperation = {
+                todo: todo,
+                operation: 'patch',
+                redirect: null,
+                token: props.token
+            } as TodoOperation
+
+            props.handleToggleTodo(todoOperation);
+        }
+    }
+
     return (
         <Router>
             <Route exact path="/edit/:todoid" render={(matchProps) => <TodoComponent data={{
@@ -30,6 +49,7 @@ const Component = (props: any) => {
                     match: matchProps,
                 }}/>}/>
             <Route exact path="/list">
+                <TodoCreate/>
                 <div key="todos">
                     <table className="TodoList">
                         <thead>
@@ -41,24 +61,17 @@ const Component = (props: any) => {
                         </thead>
                         <tbody>
                             <>
-                            {props.todos.map((todo: Todo | null, key: number) => {
-                                if(todo !== null) {
+                            {props.todos.map((todo: Todo, key: number) => {
                                     return (
                                         <tr key={todo.id + "_body"}>
                                             <td className="Cell_big" key={todo.id + "_text"}>{strikeText(todo.text, todo.checked)}</td>
-                                            <td className="Cell_small" key={todo.id + "_checked"}><input type="checkbox" checked={todo.checked} key={todo.id + "_checkbox"}/></td>
+                                            <td className="Cell_small" key={todo.id + "_checked"}><input type="checkbox" checked={todo.checked} key={todo.id + "_checkbox"} onClick={() => {
+                                                toggle(key);
+                                            }} readOnly={true}/></td>
                                             <td className="Cell_small" key={todo.id + "_edit"}><NavLink exact to={"/edit/" + key}>Edit</NavLink></td>
                                         </tr>
-                                    )   
-                                }
-                                else {
-                                    return (
-                                        <React.Fragment key={Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5) + "_checked"}>
-
-                                        </React.Fragment>
-                                    );
-                                }
-                            })}
+                                    )
+                                })}
                             </>
                         </tbody>
                     </table>

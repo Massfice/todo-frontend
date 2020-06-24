@@ -1,7 +1,9 @@
 import Todo from "./Todo";
+import { TodoOperationRedirect, StateTokenType } from "./constants";
 
 export default interface TodoOperation {
     todo: Todo,
     operation: string,
-    redirect: any | null,
+    token: StateTokenType,
+    redirect: TodoOperationRedirect,
 }

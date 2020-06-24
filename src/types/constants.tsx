@@ -5,12 +5,14 @@ import LoginFinalResponse from "./LoginFinalResponse";
 import { DispatchFunction } from "./FunctionTypes";
 import RegisterCredentials from "./RegisterCredentials";
 import TodoOperation from "./TodoOperation";
+import TodoResponse from "./TodoResponse";
 
 //Unions
 export type StateTokenType = string | null;
 export type StateUserType = User | null;
-export type ActionPayloadType = Credentials | Todo | LoginFinalResponse | null | string | RegisterCredentials | string[] | TodoOperation;
+export type ActionPayloadType = Credentials | Todo | LoginFinalResponse | null | string | RegisterCredentials | string[] | TodoOperation | TodoResponse;
 export type ActionDispatchType = DispatchFunction | null;
+export type TodoOperationRedirect = any | null;
 
 //Action Types:
 export const LOGIN_TYPE = 'LOGIN_TYPE';
@@ -30,3 +32,8 @@ export const STATE_STATE = 'STATE_STATE';
 export const STATE_REQUEST_STATE_CHANNEL = 'STATE_REQUEST_STATE_CHANNEL';
 export const STATE_RESPONSE_STATE_CHANNEL = 'STATE_RESPONSE_STATE_CHANNEL';
 export const STATE_REFRESH_STATE_CHANNEL = 'STATE_REFRESH_CHANNEL';
+
+//API Endpoints
+
+export const TODO_ENDPOINT = 'http://localhost:8000/api/todo';
+export const AUTH_ENDPOINT = 'http://meet-your-elf-auth.herokuapp.com/public';

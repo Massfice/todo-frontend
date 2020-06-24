@@ -7,7 +7,6 @@ import MainDispatchFunction from "./MainDispatchFunction";
 import Login from "../Login/Component";
 import Register from "../Register/Component";
 import Todos from "../Todos/Component";
-import Todo from '../../types/Todo';
 
 const Component = (props: any) => {
     let handleRefreshState = props.handleRefreshState;

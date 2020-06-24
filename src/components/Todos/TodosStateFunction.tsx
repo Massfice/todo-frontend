@@ -1,10 +1,11 @@
 import State from "../../types/State";
 import Todo from "../../types/Todo";
-import { stat } from "fs";
+import { StateTokenType } from "../../types/constants";
 
-const TodosStateFunction = (state: State) : {todos: Todo[]} => {
+const TodosStateFunction = (state: State) : {todos: Todo[], token: StateTokenType} => {
     return {
-        todos: state.todos
+        todos: state.todos,
+        token: state.token
     };
 }
 

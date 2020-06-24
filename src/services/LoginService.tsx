@@ -63,16 +63,7 @@ const LoginService : DispatchFunction = (payload: ActionPayloadType, dispatch: a
         if(Array.isArray(response)) {
             todos = response;
         } else {
-            let received_todos : [] = response.data;
-
-            received_todos.map((value: Todo) => {
-                todos.push({
-                    id: value.id,
-                    text: value.text,
-                    checked: value.checked
-                } as Todo);
-                return true;
-            })
+            todos = response.data as Todo[];
         }
 
         let final_response = {

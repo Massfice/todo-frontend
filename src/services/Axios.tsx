@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
+import { AUTH_ENDPOINT, TODO_ENDPOINT } from '../types/constants';
 
 const bearer = (token: string) : any => {
     return {
@@ -7,22 +8,23 @@ const bearer = (token: string) : any => {
 }
 
 const access_config = {
-    baseURL: 'http://localhost/--%20DIPLOMA%20--/meet-your-elf-auth/public',
-    timeout: 10000,
+    // baseURL: 'http://localhost/--%20DIPLOMA%20--/meet-your-elf-auth/public',
+    baseURL: AUTH_ENDPOINT,
+    timeout: 30000,
     headers: {}
 };
 
 const register_config = {
-    baseURL: 'http://localhost/--%20DIPLOMA%20--/meet-your-elf-auth/public/register/json',
-    timeout: 10000,
+    baseURL: AUTH_ENDPOINT + '/register/json',
+    timeout: 30000,
     headers: {
         'Content-Type' : 'application/json'
     }
 };
 
 const todo_config = {
-    baseURL: 'http://localhost:8000/api/todo',
-    timeout: 10000,
+    baseURL: TODO_ENDPOINT,
+    timeout: 30000,
     headers: {}
 }
 
@@ -49,9 +51,12 @@ const Axios = {
         config.headers = bearer(token);
         return axios.create(config);
     },
-    todo: (token: string) : AxiosInstance => {
+    todo: (token: string, headers: any = {}) : AxiosInstance => {
         let config = todo_config;
-        config.headers = bearer(token);
+        config.headers = {
+            ...bearer(token),
+            ...headers
+        };
         return axios.create(config);
     }
 };

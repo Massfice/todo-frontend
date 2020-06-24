@@ -6,6 +6,7 @@ import TodoStateFunction from "./TodoStateFunction";
 import TodoDispatchFunction from "./TodoDispatchFunction";
 import Todo from '../../types/Todo';
 import TodoOperation from '../../types/TodoOperation';
+import Errors from "../Errors/Component";
 
 const Component = (props: any) => {
     const getTodo =  () : Todo | null => {
@@ -32,6 +33,10 @@ const Component = (props: any) => {
     const form_Text = 'text';
     const form_Check = 'checked';
 
+    if(todo === null) {
+        props.data.match.history.push('/list');
+    }
+
     const todo_action = (operation: string) => {
         let form = document.getElementById(form_Name);
         if(form !== null && todo !== null) {
@@ -46,9 +51,10 @@ const Component = (props: any) => {
             let todoOperation : TodoOperation = {
                 operation: operation,
                 todo: _todo,
-                redirect: props.data.match.history
+                redirect: props.data.match.history,
+                token: props.token
             };
-            
+             
             if(operation === 'put') {
                 props.handleEditTodo(todoOperation);
             } else if(operation === 'delete') {
@@ -71,6 +77,7 @@ const Component = (props: any) => {
             <button onClick={() => {todo_action('put')}}>Zapisz Zmiany</button>
             <button onClick={() => {todo_action('delete')}}>Usuń</button>
             </div>
+            <Errors/>
         </div>
     );
 }

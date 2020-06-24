@@ -1,6 +1,5 @@
 import State from "../../types/State";
 import { StateUserType, StateTokenType } from "../../types/constants";
-import Todo from "../../types/Todo";
 
 const MainStateFunction = (state: State) : {user: StateUserType, token: StateTokenType} => {
     return {

@@ -7,6 +7,7 @@ import User from "../types/User";
 import { LOGIN_TYPE, CLEANUP_ERRORS_TYPE, REFRESH_STATE_TYPE, REGISTER_TYPE, LOGOUT_TYPE, SESSION_EXPIRED_TYPE, TODO_EDIT_TYPE, TODO_CREATE_TYPE, TODO_DELETE_TYPE, TODO_TOGGLE_TYPE } from "../types/constants";
 import SaveState from "./SaveState";
 import { PreState } from "./PreInit";
+import TodoResponse from "../types/TodoResponse";
 import Todo from "../types/Todo";
 
 const AddErrorsName = (name: string, errors: string[]) : string[] => {
@@ -99,29 +100,51 @@ const Reducer = (state: State = Init(), action: Action) : State => {
         return SaveState(PreState);
     }
 
-    if(action.type === TODO_EDIT_TYPE || action.type === TODO_TOGGLE_TYPE || action.type === TODO_CREATE_TYPE) {
-        const todo = action.payload as Todo;
+    if(action.type === TODO_EDIT_TYPE || action.type === TODO_TOGGLE_TYPE) {
+        const todo = action.payload as TodoResponse;
         let newTodos = state.todos.filter(t => true);
 
-        newTodos[newTodos.findIndex((value) => {
-            return value.id === todo.id;
-        })] = todo;
+        if(todo.todo !== null) {
+            newTodos[newTodos.findIndex((value) => {
+                todo.todo = todo.todo as Todo;
+                return value.id === todo.todo.id;
+            })] = todo.todo;
+        }
 
         const newState = {
             ...state,
-            todos: newTodos
+            todos: newTodos,
+            errors: todo.errors
+        }
+
+        return SaveState(newState);
+    }
+
+    if(action.type === TODO_CREATE_TYPE) {
+        const todo = action.payload as TodoResponse;
+        let newTodos = state.todos.filter(t => true);
+
+        if(todo.todo != null) {
+            newTodos.push(todo.todo);
+        }
+
+        const newState = {
+            ...state,
+            todos: newTodos,
+            errors: todo.errors
         }
 
         return SaveState(newState);
     }
 
     if(action.type === TODO_DELETE_TYPE) {
-        const todo = action.payload as Todo;
-        const newTodos = state.todos.filter(t => t.id !== todo.id);
+        const todo = action.payload as TodoResponse;
+        const newTodos = state.todos.filter(t => todo.todo !== null && t.id !== todo.todo.id);
 
         const newState = {
             ...state,
-            todos: newTodos
+            todos: newTodos,
+            errors: todo.errors
         }
 
         return SaveState(newState);
